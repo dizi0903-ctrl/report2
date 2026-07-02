@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基金会合作学校 — 产品使用情况分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC',sans-serif;background:#f0f2f5;color:#333;line-height:1.6}
+.container{max-width:1300px;margin:0 auto;padding:20px}
+.header{background:linear-gradient(135deg,#1a237e,#283593,#3949ab);color:#fff;padding:50px 40px;border-radius:16px;margin-bottom:24px;text-align:center}
+.header h1{font-size:30px;margin-bottom:6px}
+.header p{font-size:13px;opacity:.85}
+.section{background:#fff;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.section h2{font-size:20px;color:#1a237e;border-left:4px solid #3949ab;padding-left:14px;margin-bottom:16px}
+.section h3{font-size:16px;color:#455a64;margin:18px 0 10px;padding-bottom:5px;border-bottom:1px solid #e0e0e0}
+.kpi-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.kpi{flex:1;min-width:140px;background:linear-gradient(135deg,#e8eaf6,#c5cae9);border-radius:10px;padding:16px 14px;text-align:center}
+.kpi .val{font-size:26px;font-weight:700;color:#1a237e}
+.kpi .lbl{font-size:11px;color:#546e7a;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0}
+th{background:#1a237e;color:#fff;padding:8px 6px;font-weight:500;white-space:nowrap;position:sticky;top:0;z-index:1}
+td{padding:6px;border-bottom:1px solid #eee}
+td[contenteditable]{background:#fffff0;cursor:text;border:1px dashed #ccc}
+td[contenteditable]:hover{background:#fffde7;border-color:#90caf9}
+td[contenteditable]:focus{background:#fff9c4;border-color:#1e88e5;outline:none}
+tr:hover{background:#f5f5f5}
+tr:nth-child(even){background:#fafafa}
+.chart-wrap{position:relative;height:340px;margin:12px 0}
+.chart-wrap.tall{height:420px}
+.chart-row{display:flex;gap:18px}
+.chart-row .half{flex:1;min-width:0}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500}
+.badge.good{background:#e8f5e9;color:#2e7d32}.badge.warn{background:#fff3e0;color:#e65100}.badge.bad{background:#ffebee;color:#c62828}.badge.info{background:#e3f2fd;color:#0d47a1}
+.edit-hint{font-size:10px;color:#999;margin-bottom:4px}
+.btn-row{display:flex;gap:8px;margin-bottom:8px}
+.btn{font-size:11px;padding:4px 12px;border:1px solid #3949ab;background:#fff;color:#3949ab;border-radius:4px;cursor:pointer}
+.btn:hover{background:#3949ab;color:#fff}
+.toggle-panel{display:none;background:#fafafa;border:1px solid #e0e0e0;border-radius:6px;padding:10px;margin-bottom:10px}
+.toggle-panel.show{display:block}
+.toggle-panel table{font-size:11px;margin:0}
+.toggle-panel td{padding:4px 6px}
+.school-roster td{font-size:11px;padding:4px 6px}
+.status-built{color:#2e7d32;font-weight:500}
+.status-building{color:#e65100;font-weight:500}
+.summary{font-size:12px;color:#666;line-height:1.8}
+@media(max-width:768px){.chart-row{flex-direction:column}.kpi{min-width:44%}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+<h1>基金会合作学校 — 产品使用情况分析报告</h1>
+<p>数据范围：2025-2026学年第二学期（2026.02.15 ~ 2026.06.29）｜ 2026年7月</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 背景：学校完整名单 -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>合作学校清单</h2>
+<div class="summary">基金会共投资 <b>62</b> 所学校，其中 <b class="status-built">29 所已建成并产生数据</b>，<b class="status-building">33 所正在建设中</b>（暂未部署设备或未正式启用）。以下为完整名单及各校产品使用场景激活状态。</div>
+<div class="kpi-row" style="margin:16px 0">
+<div class="kpi blue"><div class="val" contenteditable="true">62</div><div class="lbl">合作学校总数</div></div>
+<div class="kpi green"><div class="val" contenteditable="true">29</div><div class="lbl">已建成（有数据）</div></div>
+<div class="kpi orange"><div class="val" contenteditable="true">33</div><div class="lbl">建设中（无数据）</div></div>
+<div class="kpi"><div class="val" contenteditable="true">17</div><div class="lbl">大屏已激活</div></div>
+<div class="kpi"><div class="val" contenteditable="true">13</div><div class="lbl">学生机已激活</div></div>
+<div class="kpi blue"><div class="val" contenteditable="true">10</div><div class="lbl">星火已使用</div></div>
+</div>
+<div class="edit-hint">💡 黄色底单元格可直接编辑数字；状态 ✓/— 格可直接点击切换；图表数据通过「📊 编辑」按钮展开修改</div>
+
+<h3>已建成学校（29所）— 各场景激活状态</h3>
+<div style="overflow-x:auto">
+<table class="school-roster">
+<tr><th>#</th><th>学校名称</th><th>省份</th><th>学校ID</th><th>大屏</th><th>学生机</th><th>授课</th><th>备课</th><th>星火</th><th>实录</th></tr>
+<tr><td>1</td><td>常州市清潭中学</td><td>江苏省</td><td>2300000001000061099</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>2</td><td>常州田家炳初级中学</td><td>江苏省</td><td>4444000020000000843</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>3</td><td>常州花园中学</td><td>江苏省</td><td>2300000001000060925</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>4</td><td>普定县实验学校</td><td>云南省</td><td>1500000100376600233</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>5</td><td>普定县第四小学</td><td>云南省</td><td>1500000100376599254</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>6</td><td>正安县第二完全小学</td><td>贵州省</td><td>1010000001000026220</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>7</td><td>正安县第六中学</td><td>贵州省</td><td>2300000001000020090</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>8</td><td>百灵庙第一小学</td><td>内蒙古</td><td>1500000100400603781</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>9</td><td>百灵庙第二小学</td><td>内蒙古</td><td>1500000100382335825</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>10</td><td>百灵庙第三小学</td><td>内蒙古</td><td>1500000100400623475</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>11</td><td>上海市徐汇区汇师小学</td><td>上海市</td><td>1500000100124812484</td><td><span class="badge">—</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>12</td><td>罗平县腊山街道新村小学</td><td>云南省</td><td>1500000100159966372</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>13</td><td>集贤县第一中学附属学校</td><td>黑龙江省</td><td>1500000100192345024</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>14</td><td>集贤县第四小学</td><td>黑龙江省</td><td>1500000100192345022</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>15</td><td>集贤县二九一农场小学</td><td>黑龙江省</td><td>1500000100192107526</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>16</td><td>汤旺县第三小学</td><td>黑龙江省</td><td>1500000100192181482</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>17</td><td>汤旺县第一小学</td><td>黑龙江省</td><td>1500000100192181953</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>18</td><td>罗平县钟山红承实验学校</td><td>云南省</td><td>1500000100159967461</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>19</td><td>罗平县第一中学</td><td>云南省</td><td>1500000100159965987</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>20</td><td>库尔勒市第二十一中学（小学部）</td><td>新疆</td><td>1500000100300720622</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>21</td><td>宕昌县计子川小学</td><td>甘肃省</td><td>3162000039000027780</td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td><td><span class="badge good">✓</span></td></tr>
+<tr><td>22</td><td>宕昌县白水川小学</td><td>甘肃省</td><td>3162000039000027781</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>23</td><td>高密市第二实验小学</td><td>山东省</td><td>1500000100142883687</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>24</td><td>七星九年一贯制学校</td><td>云南省</td><td>4444000020000006908</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>25</td><td>桥头第一小学</td><td>青海省</td><td>3863000074000000847</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>26</td><td>红河学院附属学校（小/初）</td><td>云南省</td><td>1500000100176532794</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>27</td><td>蒙自市草坝镇前进小学</td><td>云南省</td><td>1500000100208159490</td><td><span class="badge good">✓</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+<tr><td>28</td><td>柯渡镇新村晨阳小学</td><td>云南省</td><td>1500000100263856485</td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td><td><span class="badge">—</span></td></tr>
+</table>
+</div>
+
+<h3>建设中学校（33所）— 暂未产生数据</h3>
+<div style="overflow-x:auto">
+<table class="school-roster">
+<tr><th>#</th><th>学校名称</th><th>省份</th><th>#</th><th>学校名称</th><th>省份</th></tr>
+<tr><td>1</td><td>重庆市酉阳土家族苗族自治县实验小学校</td><td>重庆市</td><td>15</td><td>江西省上饶市德兴市银城第一小学</td><td>江西省</td></tr>
+<tr><td>2</td><td>江苏省泰州市兴化市施耐庵小学</td><td>江苏省</td><td>16</td><td>江西省上饶市德兴市凤凰小学</td><td>江西省</td></tr>
+<tr><td>3</td><td>山西省运城市盐湖区城西示范小学</td><td>山西省</td><td>17</td><td>江西省上饶市德兴市第二中学</td><td>江西省</td></tr>
+<tr><td>4</td><td>云南省思茅第一小学（老校区）</td><td>云南省</td><td>18</td><td>江西省赣州市瑞金市幸福小学</td><td>江西省</td></tr>
+<tr><td>5</td><td>慈利县三官寺土家族乡中学</td><td>湖南省</td><td>19</td><td>黑龙江省双鸭山市集贤县第二小学</td><td>黑龙江省</td></tr>
+<tr><td>6</td><td>慈利县阳和土家族乡中学</td><td>湖南省</td><td>20</td><td>四川省喜德县鲁基乡小学</td><td>四川省</td></tr>
+<tr><td>7</td><td>慈利县江垭镇中学</td><td>湖南省</td><td>21</td><td>四川省喜德县尼波镇中心学校</td><td>四川省</td></tr>
+<tr><td>8</td><td>务川仡佬族苗族自治县第四小学</td><td>贵州省</td><td>22</td><td>山西省大同市阳高县西北小学</td><td>山西省</td></tr>
+<tr><td>9</td><td>弥渡县德苴乡初级中学</td><td>云南省</td><td>23</td><td>贵州省遵义市汇川区沙湾镇混子小学</td><td>贵州省</td></tr>
+<tr><td>10</td><td>新疆塔什库尔干塔吉克自治县实验学校</td><td>新疆</td><td>24</td><td>广东省恩平市沙湖镇杨桥小学</td><td>广东省</td></tr>
+<tr><td>11</td><td>新疆塔什库尔干城乡寄宿制小学</td><td>新疆</td><td>25</td><td>山西省长治市平顺县青羊镇小学</td><td>山西省</td></tr>
+<tr><td>12</td><td>慈利县芙蓉学校</td><td>湖南省</td><td>26</td><td>山西省忻州市繁峙县实验小学</td><td>山西省</td></tr>
+<tr><td>13</td><td>慈利县杉木桥镇中学</td><td>湖南省</td><td>27</td><td>江西省赣州市上犹县安和学校</td><td>江西省</td></tr>
+<tr><td>14</td><td>慈利县溪口镇中学</td><td>湖南省</td><td>28</td><td>四川省南充市嘉陵区白马小学</td><td>四川省</td></tr>
+<tr><td>15</td><td>库尔勒市第二十一中学（初中部）</td><td>新疆</td><td>29</td><td>库尔勒市第四小学</td><td>新疆</td></tr>
+<tr><td>16</td><td>蒙自市大落就小学</td><td>云南省</td><td>30</td><td>德兴市重溪小学</td><td>江西省</td></tr>
+<tr><td>17</td><td>西藏浪卡子县浪卡子镇小学</td><td>西藏</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 一、智慧窗（大屏） -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>一、智慧窗（大屏）使用情况</h2>
+
+<h3>1.1 29 校大屏设备部署（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_11')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_11">
+<table>
+<tr><th>学校</th><th>大屏数</th><th>学校</th><th>大屏数</th></tr>
+<tr id="data_zhc_device"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_zhc_device"></canvas></div>
+
+<h3>1.2 29 校大屏活跃率 & 日均使用时长（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_12')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_12">
+<table>
+<tr><th>学校</th><th>开机率%</th><th>日均h</th></tr>
+<tr id="data_zhc_active"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_zhc_active"></canvas></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 二、学生机 -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>二、学生机使用情况</h2>
+
+<h3>2.1 29 校学生机设备 & 活跃率（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_21')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_21">
+<table>
+<tr><th>学校</th><th>设备数</th><th>活跃率%</th></tr>
+<tr id="data_stu_device"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_stu_device"></canvas></div>
+
+<h3>2.2 学生机软件使用场景分布</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_22')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_22">
+<table>
+<tr><th>学校</th><th>引导学(h)</th><th>自主学(h)</th><th>其他(h)</th></tr>
+<tr id="data_stu_scene"></tr>
+</table>
+</div>
+<div class="chart-wrap"><canvas id="chart_stu_scene"></canvas></div>
+
+<h3>2.3 学生机 APP 使用 TOP10（已去除系统应用）</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_stu_app"></canvas></div></div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_23')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_23">
+<table>
+<tr><th>应用</th><th>学生数</th><th>时长(h)</th></tr>
+<tr id="data_stu_app"></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 三、大小屏互动 -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>三、大小屏互动</h2>
+
+<h3>3.1 29 校授课总览（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_31')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_31">
+<table>
+<tr><th>学校</th><th>授课次数</th><th>授课教师</th><th>总时长(h)</th></tr>
+<tr id="data_course"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_course"></canvas></div>
+
+<h3>3.2 通用工具使用 TOP15</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_tool"></canvas></div></div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_32')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_32">
+<table>
+<tr><th>工具</th><th>次数</th></tr>
+<tr id="data_tool"></tr>
+</table>
+</div>
+</div>
+</div>
+
+<h3>3.3 课堂互动类型分布</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_interact"></canvas></div></div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_33')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_33">
+<table>
+<tr><th>互动类型</th><th>次数</th></tr>
+<tr id="data_interact"></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 四、教师助手 -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>四、教师助手（星火）</h2>
+
+<h3>4.1 29 校备课数据（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_41')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_41">
+<table>
+<tr><th>学校</th><th>备课次数</th><th>备课教师</th><th>星火备课</th></tr>
+<tr id="data_beike"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_beike"></canvas></div>
+
+<h3>4.2 资源引用 & 分享</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_resource"></canvas></div></div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_42')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_42">
+<table>
+<tr><th>学校</th><th>引用次数</th></tr>
+<tr id="data_resource"></tr>
+</table>
+</div>
+</div>
+</div>
+
+<h3>4.3 星火教师助手使用情况</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_spark"></canvas></div></div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_43')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_43">
+<table>
+<tr><th>学校</th><th>会话数</th><th>活跃教师</th></tr>
+<tr id="data_spark"></tr>
+</table>
+</div>
+</div>
+</div>
+
+<h3>4.4 星火激活漏斗 & 使用场景 & 排行榜</h3>
+<div class="chart-row">
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_44')">📊 编辑数据</button></div>
+<div class="toggle-panel" id="panel_44">
+<table>
+<tr><th>学校</th><th>授权</th><th>产品激活</th><th>星火激活</th><th>星火活跃</th></tr>
+<tr id="data_funnel"></tr>
+</table>
+</div>
+</div>
+<div class="half">
+<div class="btn-row"><button class="btn" onclick="togglePanel('panel_45')">📊 编辑排行榜</button></div>
+<div class="toggle-panel" id="panel_45">
+<table>
+<tr><th>教师</th><th>学校</th><th>会话数</th></tr>
+<tr id="data_rank"></tr>
+</table>
+</div>
+</div>
+</div>
+<div class="chart-row" style="margin-top:10px">
+<div class="half"><div class="chart-wrap"><canvas id="chart_funnel"></canvas></div></div>
+<div class="half"><div class="chart-wrap"><canvas id="chart_scene"></canvas></div></div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 五、课堂实录 -->
+<!-- ============================================================ -->
+<div class="section">
+<h2>五、课堂实录分析</h2>
+
+<h3>5.1 29 校实录数据（完整清单）</h3>
+<div class="btn-row">
+<button class="btn" onclick="togglePanel('panel_51')">📊 编辑图表数据</button>
+</div>
+<div class="toggle-panel" id="panel_51">
+<table>
+<tr><th>学校</th><th>实录数</th><th>分析完成</th></tr>
+<tr id="data_record"></tr>
+</table>
+</div>
+<div class="chart-wrap tall"><canvas id="chart_record"></canvas></div>
+
+<h3>5.2 课堂类型分布 & 教师提问（布鲁姆）</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_class_type"></canvas></div></div>
+<div class="half"><div class="chart-wrap"><canvas id="chart_bloom"></canvas></div></div>
+</div>
+
+<h3>5.3 教师反馈 & 4MAT 教学设计</h3>
+<div class="chart-row">
+<div class="half"><div class="chart-wrap"><canvas id="chart_feedback"></canvas></div></div>
+<div class="half"><div class="chart-wrap"><canvas id="chart_4mat"></canvas></div></div>
+</div>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ===== Toggle edit panels =====
+function togglePanel(id){var e=document.getElementById(id);e.classList.toggle('show')}
+
+// ===== FULL 29-school data (0 = no data) =====
+const schools29 = [
+'清潭中学','田家炳初中','花园中学','普定实验学校','普定四小',
+'正安二小','正安六中','库尔勒21中(初中)','百灵庙一小','百灵庙二小',
+'百灵庙三小','汇师小学','新村小学','集贤一中附校','集贤四小',
+'集贤291农场','汤旺三小','汤旺一小','钟山红承','罗平一中',
+'库尔勒21中(小学)','计子川小学','白水川小学','高密二实小','七星九年制',
+'桥头一小','红河学院附校','前进小学','新村晨阳'
+];
+
+// All data arrays (index 0-28 = 29 schools in order above)
+const zhcDevice = [2,1,1,0,0,10,2,0,1,1,1,0,1,1,1,1,1,1,0,1,0,1,0,10,0,0,2,1,0];
+const zhcActiveRate = [27.8,51.3,77.8,0,0,100,54,0,0,0,0,0,77.8,36.4,35.3,51.7,60,120,0,102.9,0,60,0,57.8,0,0,90,100,0].map(v=>v>100?100:v);
+const zhcDailyHours = [0.8,1.2,1.4,0,0,3.0,1.2,0,0,0,0,0,2.6,1.0,2.0,1.2,0.9,4.4,0,1.1,0,1.4,0,7.4,0,0,1.5,0.2,0];
+
+const stuDevice = [50,24,30,0,0,34,20,0,0,0,0,181,20,20,20,20,20,20,0,0,0,3,0,0,0,0,0,0,0];
+const stuActiveRate = [100,100,100,0,0,100,90,0,0,0,0,45,100,100,100,100,90,100,0,0,0,100,0,0,0,0,0,0,0];
+
+const stuSceneGuide = [83.2,8.8,515.8,0,0,387.3,2.4,0,0,0,0,0.1,17.8,0,0,0,0,0,0,0,0,0.3,0,0,0,0,0,0,0];
+const stuSceneAuto = [2.3,0.5,0.6,0,0,0.8,0.3,0,0,0,0,0.8,0.7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const stuSceneOther = [148.2,11.7,9428.2,0,0,337.8,9.4,0,0,0,0,381.7,9.9,0,0,0,0,0.3,0,0,0,1.5,0,0,0,0,0,0,0];
+
+const courseNum = [9,9,15,0,0,58,4,0,0,0,0,0,21,2,2,1,0,0,0,0,0,11,0,0,0,0,0,0,0];
+const courseTeachers = [2,1,3,0,0,20,1,0,0,0,0,0,2,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0];
+const courseHours = [8.4,3.9,10.6,0,0,71.8,4.0,0,0,0,0,0,21.0,1.7,1.0,1.2,0,0,0,0,0,8.8,0,0,0,0,0,0,0];
+
+const toolData = [
+  ['聚焦',10076,27],['解锁',2596,12],['手势',2212,8],['画笔',1888,31],
+  ['锁屏',1579,8],['屏幕推送',1104,11],['板擦',815,29],['屏幕巡视',786,6],
+  ['视频展台',759,18],['计时器',387,13],['AI录课',290,16],['星火教师助手',264,14],
+  ['截屏分享',252,5],['拍照讲解',110,6],['智慧微课',32,1]
+];
+
+const interactData = [
+  ['学生讲',48],['屏幕推送',34],['随机选人',33],['全班作答',20],
+  ['讨论',19],['自由出题',9],['题库出题',6],['抢答',5],['分组作答',3],['投票',3]
+];
+
+const beikeNum = [28,17,39,0,0,375,8,0,0,0,0,1,16,1,3,3,0,2,0,0,3,7,0,0,0,0,0,0,0];
+const beikeTeachers = [2,1,8,0,0,37,3,0,0,0,0,1,3,1,1,1,0,1,0,0,1,2,0,0,0,0,1,0,0];
+const sparkBeike = [30,10,361,0,0,15,1,0,0,0,0,0,37,9,20,20,0,9,0,0,0,32,0,0,0,0,0,0,0];
+
+const resourceRef = [35,6,594,0,0,80,5,0,0,0,0,0,33,45,60,60,0,0,0,0,0,72,0,0,0,0,0,0,0];
+
+const sparkSessions = [135,37,130,0,0,17,4,0,0,0,0,0,2,2,2,1,0,0,0,0,0,4,0,0,0,0,0,0,0];
+const sparkTeachers = [10,2,11,0,0,3,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0];
+
+const funnelAuth = [21,6,13,0,111,218,10,0,0,0,0,0,11,6,6,6,0,6,0,0,10,6,0,0,0,0,0,0,0];
+const funnelProduct = [13,1,12,0,0,34,3,0,0,0,0,0,2,1,1,1,0,1,0,0,0,2,0,0,0,0,0,0,0];
+const funnelSparkAct = [13,1,12,0,0,6,1,0,0,0,0,0,2,1,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0];
+const funnelSparkActive = [13,1,11,0,0,3,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0];
+
+const recordNum = [3,4,1,0,0,105,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0];
+const recordAnalyzed = [2,2,1,0,0,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+const rankData = [
+  ['综合教师1','花园中学',29],['星火1','田家炳初中',20],['星火3','清潭中学',18],
+  ['综合教师1','田家炳初中',17],['星火8','清潭中学',16]
+];
+const sceneData = [['bg-1',294],['辅助课件创编',19],['人机协同创编',8],['启发教学设计',4],['AI自由对话',3],['课件生成',3],['高效资源检索',3]];
+const classTypeData = [['混合型',29],['讲授型',19],['对话型',19],['练习型',6]];
+const bloomData = [['正安二小',[358,1533,380,244,71,62]],['清潭中学',[9,27,6,7,4,3]],['花园中学',[9,10,9,7,0,1]],['田家炳初中',[0,1,2,1,0,1]]];
+const feedbackData = [['正安二小',[473,412,140,1697]],['清潭中学',[8,14,21,13]],['花园中学',[0,7,6,23]],['田家炳初中',[0,0,0,5]]];
+const mat4Data = [['正安二小',[108,2239,256,39]],['清潭中学',[3,44,7,2]],['花园中学',[2,24,10,0]],['田家炳初中',[1,1,2,1]]];
+
+const colors = ['#3949ab','#5c6bc0','#7986cb','#9fa8da','#c5cae9','#1e88e5','#43a047','#ef6c00','#8e24aa','#e53935','#00acc1','#fdd835','#6d4c41','#546e7a','#26a69a'];
+
+// ===== Helper: build editable data panel rows =====
+function buildEditRows(tableId, schools, data, labels, suffix) {
+  const row = document.getElementById(tableId);
+  if (!row) return;
+  let html = '';
+  for (let i = 0; i < Math.ceil(schools.length / 3); i++) {
+    html += '<tr>';
+    for (let j = 0; j < 3; j++) {
+      const idx = i + j * Math.ceil(schools.length / 3);
+      if (idx >= schools.length) { html += '<td></td><td></td>'; continue; }
+      html += `<td>${schools[idx]}</td><td contenteditable="true">${Array.isArray(data) ? data[idx] : ''}${suffix||''}</td>`;
+    }
+    html += '</tr>';
+  }
+  row.parentElement.innerHTML += html;
+}
+
+// Build all edit panels
+(function buildPanels() {
+  // 1.1 zhc device
+  let r = document.getElementById('data_zhc_device');
+  let h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${zhcDevice[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 1.2 zhc active
+  r = document.getElementById('data_zhc_active');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${zhcActiveRate[idx]}</td><td contenteditable="true">${zhcDailyHours[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 2.1 student device
+  r = document.getElementById('data_stu_device');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${stuDevice[idx]}</td><td contenteditable="true">${stuActiveRate[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 2.2 scene
+  r = document.getElementById('data_stu_scene');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${stuSceneGuide[idx]}</td><td contenteditable="true">${stuSceneAuto[idx]}</td><td contenteditable="true">${stuSceneOther[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 2.3 app
+  r = document.getElementById('data_stu_app');
+  h = '';
+  const stuApps = ['课堂互动','数字教学','Edge','豆包','赛·课堂','班级学习','QQ浏览器','白板','相机','图库'];
+  const stuAppStudents = [162,67,51,66,12,61,28,67,87,74];
+  const stuAppHours = [1004,298,86,29,24,11,5,5,3.4,2.7];
+  for (let i = 0; i < stuApps.length; i++) {
+    h += `<tr><td>${stuApps[i]}</td><td contenteditable="true">${stuAppStudents[i]}</td><td contenteditable="true">${stuAppHours[i]}</td></tr>`;
+  }
+  r.parentElement.innerHTML += h;
+
+  // 3.1 course
+  r = document.getElementById('data_course');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${courseNum[idx]}</td><td contenteditable="true">${courseTeachers[idx]}</td><td contenteditable="true">${courseHours[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 3.2 tools
+  r = document.getElementById('data_tool');
+  h = '';
+  for (let i = 0; i < toolData.length; i++) {
+    h += `<tr><td>${toolData[i][0]}</td><td contenteditable="true">${toolData[i][1]}</td></tr>`;
+  }
+  r.parentElement.innerHTML += h;
+
+  // 3.3 interact
+  r = document.getElementById('data_interact');
+  h = '';
+  for (let i = 0; i < interactData.length; i++) {
+    h += `<tr><td>${interactData[i][0]}</td><td contenteditable="true">${interactData[i][1]}</td></tr>`;
+  }
+  r.parentElement.innerHTML += h;
+
+  // 4.1 beike
+  r = document.getElementById('data_beike');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${beikeNum[idx]}</td><td contenteditable="true">${beikeTeachers[idx]}</td><td contenteditable="true">${sparkBeike[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 4.2 resource
+  r = document.getElementById('data_resource');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${resourceRef[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 4.3 spark
+  r = document.getElementById('data_spark');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${sparkSessions[idx]}</td><td contenteditable="true">${sparkTeachers[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 4.4 funnel
+  r = document.getElementById('data_funnel');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${funnelAuth[idx]}</td><td contenteditable="true">${funnelProduct[idx]}</td><td contenteditable="true">${funnelSparkAct[idx]}</td><td contenteditable="true">${funnelSparkActive[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+
+  // 4.5 rank
+  r = document.getElementById('data_rank');
+  h = '';
+  for (let i = 0; i < rankData.length; i++) {
+    h += `<tr><td>${rankData[i][0]}</td><td>${rankData[i][1]}</td><td contenteditable="true">${rankData[i][2]}</td></tr>`;
+  }
+  r.parentElement.innerHTML += h;
+
+  // 5.1 record
+  r = document.getElementById('data_record');
+  h = '';
+  for (let i = 0; i < Math.ceil(schools29.length / 2); i++) {
+    h += '<tr>';
+    for (let j = 0; j < 2; j++) {
+      const idx = i + j * Math.ceil(schools29.length / 2);
+      if (idx >= schools29.length) { h += '<td></td><td></td><td></td>'; continue; }
+      h += `<td>${schools29[idx]}</td><td contenteditable="true">${recordNum[idx]}</td><td contenteditable="true">${recordAnalyzed[idx]}</td>`;
+    }
+    h += '</tr>';
+  }
+  r.parentElement.innerHTML += h;
+})();
+
+// ===== Charts =====
+// 1.1 大屏设备数
+new Chart('chart_zhc_device',{type:'bar',data:{labels:schools29,datasets:[{label:'大屏设备数',data:zhcDevice,backgroundColor:'#3949ab'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校大屏设备数（0=无设备）'}}}});
+
+// 1.2 大屏活跃率
+new Chart('chart_zhc_active',{type:'bar',data:{labels:schools29,datasets:[{label:'日均开机率%',data:zhcActiveRate,backgroundColor:zhcActiveRate.map(v=>v>=80?'#43a047':v>=30?'#ef6c00':'#999')}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校大屏日均开机率（%，超100按100计）'}}}});
+
+// 2.1 学生机
+new Chart('chart_stu_device',{type:'bar',data:{labels:schools29,datasets:[{label:'设备数',data:stuDevice,backgroundColor:'#3949ab',yAxisID:'y'},{label:'活跃率%',data:stuActiveRate,backgroundColor:'#43a047',yAxisID:'y1'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{y:{position:'left',title:{display:true,text:'设备数'}},y1:{position:'right',title:{display:true,text:'活跃率%'},grid:{drawOnChartArea:false}}},plugins:{title:{display:true,text:'29校学生机设备数 & 活跃率（0=无设备）'}}}});
+
+// 2.2 场景
+new Chart('chart_stu_scene',{type:'bar',data:{labels:schools29,datasets:[{label:'引导学',data:stuSceneGuide,backgroundColor:'#43a047'},{label:'自主学',data:stuSceneAuto,backgroundColor:'#1e88e5'},{label:'其他',data:stuSceneOther,backgroundColor:'#ef6c00'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,type:'logarithmic',title:{display:true,text:'h (对数)'}}},plugins:{title:{display:true,text:'学生机软件使用场景分布（注意花园中学其他场景9428h）'}}}});
+
+// 2.3 APP
+new Chart('chart_stu_app',{type:'bar',data:{labels:['课堂互动','数字教学','Edge','豆包','赛·课堂','班级学习','QQ浏览器','白板','相机','图库'],datasets:[{label:'总时长(h)',data:[1004,298,86,29,24,11,5,5,3.4,2.7],backgroundColor:colors.slice(0,10)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'学生机APP使用时长TOP10（已去系统应用）'}}}});
+
+// 3.1 授课
+new Chart('chart_course',{type:'bar',data:{labels:schools29,datasets:[{label:'授课次数',data:courseNum,backgroundColor:'#3949ab'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校授课次数（0=无授课）'}}}});
+
+// 3.2 工具
+new Chart('chart_tool',{type:'bar',data:{labels:toolData.map(d=>d[0]),datasets:[{label:'使用次数',data:toolData.map(d=>d[1]),backgroundColor:colors.slice(0,toolData.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'通用工具使用次数TOP15'}}}});
+
+// 3.3 互动
+new Chart('chart_interact',{type:'doughnut',data:{labels:interactData.map(d=>d[0]),datasets:[{data:interactData.map(d=>d[1]),backgroundColor:colors.slice(0,interactData.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'课堂互动类型分布'}}}});
+
+// 4.1 备课
+new Chart('chart_beike',{type:'bar',data:{labels:schools29,datasets:[{label:'备课次数',data:beikeNum,backgroundColor:'#3949ab'},{label:'星火备课',data:sparkBeike,backgroundColor:'#C8963E'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校备课次数 & 星火备课（0=无备课）'}}}});
+
+// 4.2 资源
+new Chart('chart_resource',{type:'bar',data:{labels:schools29,datasets:[{label:'引用次数',data:resourceRef,backgroundColor:'#43a047'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校资源引用次数（0=无引用）'}}}});
+
+// 4.3 星火
+new Chart('chart_spark',{type:'bar',data:{labels:schools29,datasets:[{label:'会话数',data:sparkSessions,backgroundColor:'#3949ab'},{label:'活跃教师',data:sparkTeachers,backgroundColor:'#C8963E'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校星火使用情况（0=未使用）'}}}});
+
+// 4.4 漏斗 & 场景
+new Chart('chart_funnel',{type:'bar',data:{labels:schools29,datasets:[{label:'授权',data:funnelAuth,backgroundColor:'#e0e0e0'},{label:'产品激活',data:funnelProduct,backgroundColor:'#90caf9'},{label:'星火激活',data:funnelSparkAct,backgroundColor:'#3949ab'},{label:'星火活跃',data:funnelSparkActive,backgroundColor:'#C8963E'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'星火助手激活漏斗（29校）'}}}});
+new Chart('chart_scene',{type:'doughnut',data:{labels:sceneData.map(d=>d[0]),datasets:[{data:sceneData.map(d=>d[1]),backgroundColor:colors.slice(0,sceneData.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'星火使用场景分布'}}}});
+
+// 5.1 实录
+new Chart('chart_record',{type:'bar',data:{labels:schools29,datasets:[{label:'实录数',data:recordNum,backgroundColor:'#3949ab'},{label:'分析完成',data:recordAnalyzed,backgroundColor:'#43a047'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'29校课堂实录数（0=无实录）'}}}});
+
+// 5.2 课堂类型 & 布鲁姆
+new Chart('chart_class_type',{type:'doughnut',data:{labels:classTypeData.map(d=>d[0]),datasets:[{data:classTypeData.map(d=>d[1]),backgroundColor:['#3949ab','#43a047','#ef6c00','#e53935']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'课堂类型分布'}}}});
+new Chart('chart_bloom',{type:'bar',data:{labels:bloomData.map(d=>d[0]),datasets:[{label:'记忆',data:[358,9,9,0],backgroundColor:'#e3f2fd'},{label:'理解',data:[1533,27,10,1],backgroundColor:'#bbdefb'},{label:'应用',data:[380,6,9,2],backgroundColor:'#90caf9'},{label:'分析',data:[244,7,7,1],backgroundColor:'#64b5f6'},{label:'评价',data:[71,4,0,0],backgroundColor:'#42a5f5'},{label:'创造',data:[62,3,1,1],backgroundColor:'#1e88e5'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{title:{display:true,text:'教师提问布鲁姆分类'}}}});
+
+// 5.3 反馈 & 4MAT
+new Chart('chart_feedback',{type:'bar',data:{labels:feedbackData.map(d=>d[0]),datasets:[{label:'评价型',data:[473,8,0,0],backgroundColor:'#e8eaf6'},{label:'指导型',data:[412,14,7,0],backgroundColor:'#7986cb'},{label:'鼓励型',data:[140,21,6,0],backgroundColor:'#3949ab'},{label:'其他',data:[1697,13,23,5],backgroundColor:'#ccc'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{title:{display:true,text:'教师反馈类型分析'}}}});
+new Chart('chart_4mat',{type:'bar',data:{labels:mat4Data.map(d=>d[0]),datasets:[{label:'为何',data:[108,3,2,1],backgroundColor:'#3949ab'},{label:'是何',data:[2239,44,24,1],backgroundColor:'#43a047'},{label:'如何',data:[256,7,10,2],backgroundColor:'#ef6c00'},{label:'若何',data:[39,2,0,1],backgroundColor:'#e53935'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'4MAT教学设计分析'}}}});
+
+// ===== 已建成学校状态格：点击切换 ✓ / — =====
+(function(){
+  // 找到「已建成学校」表格下所有状态列（thead 第5列起为 大屏/学生机/授课/备课/星火/实录）
+  var tables = document.querySelectorAll('table.school-roster');
+  tables.forEach(function(tbl){
+    var rows = tbl.querySelectorAll('tr');
+    rows.forEach(function(row){
+      // 跳过表头行（包含 th）以及建设中学校的行（第二个表格）
+      if (row.querySelector('th')) return;
+      var cells = row.querySelectorAll('td');
+      // 状态列：第5列(index 4) 到第10列(index 9)，即 大屏/学生机/授课/备课/星火/实录
+      for (var i = 4; i <= 9 && i < cells.length; i++) {
+        var cell = cells[i];
+        var span = cell.querySelector('span.badge');
+        if (!span) continue;
+        // 设置可点击样式
+        cell.style.cursor = 'pointer';
+        cell.title = '点击切换 ✓ / —';
+        cell.onclick = (function(s, c) {
+          return function(){
+            if (s.classList.contains('good')) {
+              s.classList.remove('good');
+              s.classList.add('bad');
+              s.textContent = '—';
+              c.style.background = '#fafafa';
+            } else {
+              s.classList.remove('bad');
+              s.classList.add('good');
+              s.textContent = '✓';
+              c.style.background = '#fffff0';
+            }
+          };
+        })(span, cell);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
